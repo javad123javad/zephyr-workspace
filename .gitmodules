@@ -4,3 +4,6 @@
 [submodule "hvac"]
 	path = hvac
 	url = git@gitlab.com:essensium-mind/zephyr/hvac.git
+[submodule "zephyr_sntp"]
+	path = zephyr_sntp
+	url = git@github.com:javad123javad/zephyr-workspace.git
