@@ -1,0 +1,6 @@
+[submodule "ZRobot"]
+	path = ZRobot
+	url = git@github.com:javad123javad/ZRobot.git
+[submodule "hvac"]
+	path = hvac
+	url = git@gitlab.com:essensium-mind/zephyr/hvac.git
