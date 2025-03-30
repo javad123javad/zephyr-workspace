@@ -1,0 +1,8 @@
+&i2c0 {
+    status = "okay";
+    clock-frequency = <100000>; // 100 kHz
+    si5351@60 {
+        compatible = "silabs,si5351";
+        reg = <0x60>;
+    };
+};
