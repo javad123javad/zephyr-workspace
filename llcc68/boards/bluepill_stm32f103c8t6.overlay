@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2024 Eve Redero
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+&spi1 {
+	pinctrl-0 = <&spi1_sck_master_pa5 &spi1_miso_master_pa6 &spi1_mosi_master_pa7>;
+	pinctrl-names = "default";
+	status = "okay";
+    cs-gpios = <&gpio0 17 GPIO_ACTIVE_LOW>;
+
+    llcc68: llcc68@0 {
+        compatible = "semtech,llcc68";
+        reg = <0>;
+        spi-max-frequency = <16000000>;
+        reset-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>;
+        dio1-gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
+        busy-gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
+};
+

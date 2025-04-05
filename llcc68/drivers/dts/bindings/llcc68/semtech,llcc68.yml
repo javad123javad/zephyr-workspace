@@ -1,0 +1,25 @@
+# Copyright (c) 2019 Manivannan Sadhasivam
+# Copyright (c) 2020 Andreas Sandberg
+# SPDX-License-Identifier: Apache-2.0
+
+include: spi-device.yaml
+
+properties:
+  reset-gpios:
+    type: phandle-array
+    description: |
+      GPIO connected to the modem's NRESET signal.
+
+      This signal is open-drain, active-low as interpreted by the
+      modem.
+
+  busy-gpios:
+    type: phandle-array
+    description: |
+      GPIO connected to the modem's BUSY signal.
+
+dio1-gpios:
+  type: phandle-array
+  description: |
+    GPIO connected to DIO1. This GPIO will be used as a generic
+    IRQ line from the chip.
