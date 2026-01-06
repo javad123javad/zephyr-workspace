@@ -40,31 +40,29 @@ int main(void)
 
 	printf("Hello World! %s\n", CONFIG_BOARD_TARGET);
 
-	if (
-		!pwm_is_ready_dt(&mfl_a)
-|| !pwm_is_ready_dt(&mfl_b)
-|| !pwm_is_ready_dt(&mfr_a)
-|| !pwm_is_ready_dt(&mfr_b)
-|| !pwm_is_ready_dt(&mbl_a)
-|| !pwm_is_ready_dt(&mbl_b)
-|| !pwm_is_ready_dt(&mbr_a)
-|| !pwm_is_ready_dt(&mbr_b)) {
+	if (!pwm_is_ready_dt(&mfl_a) || !pwm_is_ready_dt(&mfl_b) || !pwm_is_ready_dt(&mfr_a) ||
+	    !pwm_is_ready_dt(&mfr_b) || !pwm_is_ready_dt(&mbl_a) || !pwm_is_ready_dt(&mbl_b) ||
+	    !pwm_is_ready_dt(&mbr_a) || !pwm_is_ready_dt(&mbr_b)) {
 		printk("Error: PWM device  is not ready\n");
 		return 0;
 	}
 
 	int ret = pwm_set_dt(&mfl_a, mfl_a.period, 0);
-	if(ret)
-	{
+	ret |= pwm_set_dt(&mfr_a, mfl_a.period, 0);
+	ret |= pwm_set_dt(&mbl_a, mfl_a.period, 0);
+	ret |= pwm_set_dt(&mbr_a, mfl_a.period, 0);
+	if (ret) {
 		printk("Error setting motor pulse width: %d\n", ret);
 	}
 	k_msleep(1000);
 
-	
-	ret = pwm_set_dt(&mfl_a, mfl_a.period, mfl_a.period/2);
-	if(ret)
-	{
-		printk("Opps: Unable to set the pwm: %d\n",ret);
+	ret = pwm_set_dt(&mfl_a, mfl_a.period, 0);
+	ret = pwm_set_dt(&mfr_a, mfl_a.period, 0);
+	ret = pwm_set_dt(&mbl_a, mfl_a.period, 0);
+	ret = pwm_set_dt(&mbr_a, mfl_a.period, 0);
+
+	if (ret) {
+		printk("Opps: Unable to set the pwm: %d\n", ret);
 	}
 	printk("PWM is set!\n");
 	while (1) {
