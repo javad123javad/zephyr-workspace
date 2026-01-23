@@ -26,47 +26,57 @@
 
 int main(void)
 {
-	const struct pwm_dt_spec mfl_a = PWM_DT_SPEC_GET(MOTORF_LEFT_A);
-	const struct pwm_dt_spec mfl_b = PWM_DT_SPEC_GET(MOTORF_LEFT_B);
+    const struct pwm_dt_spec mfl_a = PWM_DT_SPEC_GET(MOTORF_LEFT_A);
+    const struct pwm_dt_spec mfl_b = PWM_DT_SPEC_GET(MOTORF_LEFT_B);
 
-	const struct pwm_dt_spec mfr_a = PWM_DT_SPEC_GET(MOTORF_RIGHT_A);
-	const struct pwm_dt_spec mfr_b = PWM_DT_SPEC_GET(MOTORF_RIGHT_B);
+    const struct pwm_dt_spec mfr_a = PWM_DT_SPEC_GET(MOTORF_RIGHT_A);
+    const struct pwm_dt_spec mfr_b = PWM_DT_SPEC_GET(MOTORF_RIGHT_B);
 
-	const struct pwm_dt_spec mbl_a = PWM_DT_SPEC_GET(MOTORB_LEFT_A);
-	const struct pwm_dt_spec mbl_b = PWM_DT_SPEC_GET(MOTORB_LEFT_B);
+    const struct pwm_dt_spec mbl_a = PWM_DT_SPEC_GET(MOTORB_LEFT_A);
+    const struct pwm_dt_spec mbl_b = PWM_DT_SPEC_GET(MOTORB_LEFT_B);
 
-	const struct pwm_dt_spec mbr_a = PWM_DT_SPEC_GET(MOTORB_RIGHT_A);
-	const struct pwm_dt_spec mbr_b = PWM_DT_SPEC_GET(MOTORB_RIGHT_B);
+    const struct pwm_dt_spec mbr_a = PWM_DT_SPEC_GET(MOTORB_RIGHT_A);
+    const struct pwm_dt_spec mbr_b = PWM_DT_SPEC_GET(MOTORB_RIGHT_B);
 
-	printf("Hello World! %s\n", CONFIG_BOARD_TARGET);
+    printf("Hello World! %s\n", CONFIG_BOARD_TARGET);
 
-	if (!pwm_is_ready_dt(&mfl_a) || !pwm_is_ready_dt(&mfl_b) || !pwm_is_ready_dt(&mfr_a) ||
-	    !pwm_is_ready_dt(&mfr_b) || !pwm_is_ready_dt(&mbl_a) || !pwm_is_ready_dt(&mbl_b) ||
-	    !pwm_is_ready_dt(&mbr_a) || !pwm_is_ready_dt(&mbr_b)) {
-		printk("Error: PWM device  is not ready\n");
-		return 0;
-	}
+    if (!pwm_is_ready_dt(&mfl_a) || !pwm_is_ready_dt(&mfl_b) || !pwm_is_ready_dt(&mfr_a) ||
+            !pwm_is_ready_dt(&mfr_b) || !pwm_is_ready_dt(&mbl_a) || !pwm_is_ready_dt(&mbl_b) ||
+            !pwm_is_ready_dt(&mbr_a) || !pwm_is_ready_dt(&mbr_b)) {
+        printk("Error: PWM device  is not ready\n");
+        return 0;
+    }
 
-	int ret = pwm_set_dt(&mfl_a, mfl_a.period, 0);
-	ret |= pwm_set_dt(&mfr_a, mfl_a.period, 0);
-	ret |= pwm_set_dt(&mbl_a, mfl_a.period, 0);
-	ret |= pwm_set_dt(&mbr_a, mfl_a.period, 0);
-	if (ret) {
-		printk("Error setting motor pulse width: %d\n", ret);
-	}
-	k_msleep(1000);
+    int ret = pwm_set_dt(&mfl_a, mfl_a.period, mfl_a.period);
+    ret |= pwm_set_dt(&mfr_a, mfl_a.period, mfl_a.period);
+    ret |= pwm_set_dt(&mbl_a, mfl_a.period, mfl_a.period);
+    ret |= pwm_set_dt(&mbr_a, mfl_a.period, mfl_a.period);
+    if (ret) {
+        printk("Error setting motor pulse width: %d\n", ret);
+    }
+    k_msleep(1000);
+    int speed = mfl_a.period;
+    for (int i =speed; i> 0; i=i-100)
+    {
+        ret = pwm_set_dt(&mfl_a, mfl_a.period, i);
 
-	ret = pwm_set_dt(&mfl_a, mfl_a.period, 0);
-	ret = pwm_set_dt(&mfr_a, mfl_a.period, 0);
-	ret = pwm_set_dt(&mbl_a, mfl_a.period, 0);
-	ret = pwm_set_dt(&mbr_a, mfl_a.period, 0);
+        ret = pwm_set_dt(&mfr_a, mfl_a.period, i);
 
-	if (ret) {
-		printk("Opps: Unable to set the pwm: %d\n", ret);
-	}
-	printk("PWM is set!\n");
-	while (1) {
-		k_msleep(1000);
-	}
-	return 0;
+        ret = pwm_set_dt(&mbl_a, mfl_a.period, i);
+
+        ret = pwm_set_dt(&mbr_a, mfl_a.period, i);
+        printk("Speed: %d\n", i);
+
+        k_msleep(2000);
+
+
+        if (ret) {
+            printk("Opps: Unable to set the pwm: %d\n", ret);
+        }
+    }
+    printk("PWM is set!\n");
+    while (1) {
+        k_msleep(1000);
+    }
+    return 0;
 }
